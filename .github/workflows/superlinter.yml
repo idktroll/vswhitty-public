@@ -1,10 +1,44 @@
+name: build
+on: [workflow_dispatch]
 jobs:
-  build:
-    runs-on: [ubuntu-latest, macos-latest]
+  main:
+    runs-on: ubuntu-latest
     steps:
-      - uses: krdlab/setup-haxe@v1
+      - uses: actions/checkout@main
+      - uses: nttld/setup-ndk@main
+        id: setup-ndk
         with:
-          haxe-version: 4.0.5
-      - run: |
-          haxe -version
-          haxelib install hxnodejs
+          ndk-version: r21e
+      - name: haxe all
+        uses: krdlab/setup-haxe@v1
+        with:
+          haxe-version: 4.1.5
+      - name: install all
+        run: |
+          haxelib setup ~/haxelib
+          haxelib install lime 7.8.0
+          haxelib git openfl https://github.com/openfl/openfl develop
+          haxelib install flixel 4.8.1
+          haxelib install flixel-ui 2.5.0
+          haxelib install flixel-addons 2.9.0
+          haxelib git hscript https://github.com/haxefoundation/hscript master
+          haxelib install newgrounds 1.3.0
+          haxelib git flixel-tools https://github.com/haxeflixel/flixel-tools dev
+          haxelib git polymod https://github.com/swordcube/scriptless-polymod
+          haxelib git discord_rpc https://github.com/aidan63/linc_discord-rpc master
+      - name: install android all
+        run: |
+          haxelib run lime config ANDROID_SDK $ANDROID_HOME
+          haxelib run lime config ANDROID_NDK_ROOT $ANDROID_NDK_HOME
+          haxelib run lime config JAVA_HOME $JAVA_HOME_11_X64
+          haxelib run lime config ANDROID_SETUP true
+        env:
+         ANDROID_NDK_HOME: ${{ steps.setup-ndk.outputs.ndk-path }}
+      - name: build all
+        run: |
+          haxelib run lime build android
+      - name: publish artifact
+        uses: actions/upload-artifact@main
+        with:
+          name: forever
+          path: export/release/android/bin/app/build/outputs/apk/debug
