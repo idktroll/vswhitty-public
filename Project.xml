@@ -2,7 +2,7 @@
 <project>
 	<!-- _________________________ Application Settings _________________________ -->
 
-	<app title="Friday Night Funkin' Kade Engine" file="Kade Engine" packageName="com.ninjamuffin99.funkin" package="com.ninjamuffin99.funkin" main="Main" version="0.2.7.1" company="ninjamuffin99" />
+	<app title="FNF KE" file="Kade Engine" packageName="com.ninjamuffin99.funkinke" package="com.ninjamuffin99.funkinke" main="Main" version="0.2.7.1" company="ninjamuffin99" />
 
 	<!--Switch Export with Unique ApplicationID and Icon-->
 	<set name="APP_ID" value="0x0100f6c013bbc000" />
@@ -25,6 +25,8 @@
 
 	<!--Desktop-specific-->
 	<window if="desktop" orientation="landscape" fullscreen="false" resizable="true" vsync="false"/>
+	<define name="windows" if="desktop" />
+        <define name="sys" if="desktop" />
 
 	<!--Mobile-specific-->
 	<window if="mobile" orientation="landscape" fullscreen="true" width="0" height="0" resizable="false"/>
@@ -93,7 +95,7 @@
 	<assets path="assets/week6"    library="week6"    exclude="*.mp3" unless="web"/>
 	<assets path="assets/bonusWeek"    library="bonusWeek"    exclude="*.mp3" unless="web"/>
 	<assets path="assets/bonusWeek"    library="bonusWeek"    exclude="*.ogg" if="web"/>
-	<assets path="assets/replays"    library="replays"/>
+	<!-- <assets path="assets/replays"    library="replays"/> -->
 	<assets path='example_mods' rename='mods' embed='false'/>
 	<assets path='art/readme.txt' rename='do NOT readme.txt' />
 	<!-- <template path='mods' /> -->
@@ -120,8 +122,8 @@
 	<haxelib name="newgrounds"/>
 	<haxelib name="faxe" if='switch'/>
 	<haxelib name="polymod"/>
-	<haxelib name="discord_rpc" if="windows"/>
-	<haxelib name="linc_luajit" if="windows"/>
+	<haxelib name="discord_rpc" if="desktop"/>
+	<haxelib name="linc_luajit" if="desktop"/>
 
 	<!-- <haxelib name="hxcpp-debug-server" if="desktop"/> -->
 
